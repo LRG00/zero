@@ -1,0 +1,21 @@
+{
+  "name": "lee-blog",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vuepress dev docs",
+    "build": "vuepress build docs",
+    "deploy": "sh deploy.sh"
+  },
+  "keywords": ["javascript"],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LRG00/zero/issues"
+  },
+  "homepage": "https://github.com/LRG00/zero#readme",
+  "devDependencies": {
+    "vuepress": "^1.8.2"
+  }
+}
