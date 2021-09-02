@@ -1,0 +1,238 @@
+# css
+
+## 实现三角形
+
+```html
+<style>
+  #triangle {
+    width: 0px;
+    height: 0px;
+    border: 30px solid transparent;
+    border-top-color: red; /* 下三角 */
+    border-bottom-color: blue; /* 上三角 */
+    border-right-color: pink; /* 左三角 */
+    border-left-color: black; /* 右三角 */
+  }
+</style>
+<div id="triangle"></div>
+```
+
+## css 动画实现（animation，transition）
+
+### transition
+
+1. transition 需用事件触发（比如加个 hover 伪类）
+2. 一次性，不能重复发生，除非一再触发
+3. 只有两个状态：开始和结束状态
+4. 一条 transition 规则只能定义一个属性
+
+```html
+<style>
+  .box {
+    height: 100px;
+    width: 100px;
+    background-color: pink;
+    /* width,要过度的属性，1s完成动画所需要的时间 速度效果的速度曲线 0.5s延迟多久之后开始*/
+    transition: width 1s ease-in-out 0.5s;
+  }
+  .box:hover {
+    width: 200px;
+  }
+</style>
+<div class="box"></div>
+```
+
+### animation
+
+- animation 解决 transition 出现的缺点
+
+```html
+<style>
+  .box {
+    height: 100px;
+    width: 100px;
+    background-color: pink;
+    animation: 1s xxx infinite;
+  }
+  .box:hover {
+    /* 动画暂停 */
+    animation-play-state: paused;
+  }
+  @keyframes xxx {
+    from {
+      background: yellowgreen;
+      width: 200px;
+    }
+
+    50% {
+      background: yellow;
+      width: 100px;
+    }
+
+    to {
+      background: aquamarine;
+      width: 50px;
+    }
+  }
+</style>
+<div class="box"></div>
+```
+
+## css 权重计算
+
+**选择器优先级递增排序：**
+
+1. 标签选择器（例如：h1）, 权重:1
+2. 类选择器，属性选择器和伪类选择器（例如：.example, .example[title], .example:active）, 权重:10
+3. id 选择器（例如：#example）, 权重:100
+
+!important>行内样式>ID 选择器 > 类选择器 | 属性选择器 | 伪类选择器 > 元素选择器
+
+## 几种水平垂直居中的方法
+
+1. display: flex; justify-content:center; align-items: center;
+2. display: grid; align-items: center; justify-items: center;
+3. position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+4. display: table;
+
+## 盒模型
+
+**分类：** `标准盒模型`和`ie盒模型`, 默认是标准盒模型,区别（计算盒子宽高不一样）
+
+**区别：** 计算盒子宽高不一样
+
+**切换 ：** ie 盒模型 box-sizing: border-box; 标准盒模型 box-sizing: centent-box
+
+```html
+<style>
+  .ie {
+    width: 150px;
+    height: 80px;
+    padding: 20px;
+    margin: 20px;
+    border: 10px solid red;
+    box-sizing: border-box;
+  }
+  .bz {
+    width: 150px;
+    height: 80px;
+    padding: 20px;
+    margin: 20px;
+    border: 10px solid blue;
+    box-sizing: content-box;
+  }
+</style>
+<div class="ie" style="width: 150px">ieieieieieie</div>
+<div class="bz">bzbzbzbzbzbz</div>
+```
+
+**ie 盒模型计算：** 设置了 width:150px;盒模型的宽度就是 150px。content 部分会自动变化。
+
+模型宽度 150 = content（90） + padding（左右 40） + border（左右 20）
+
+**标准盒模型计算：** 设置了 width:150px;content 就等于 150px。
+
+模型宽度 210= content（150）+ padding（左右 40） + border（左右 20）
+
+**JS 如何设置、获取盒模型对应的宽和高:**
+
+````javascript
+    // 1 缺点：通过这种方式，只能获取**行内样式**，不能获取`内嵌`的样式和`外链`的样式。
+    var ie = document.querySelector('.ie')
+    var bz = document.querySelector('.bz')
+    console.log(ie.style.width, 'style') // 150px
+    console.log(bz.style.width, 'style') // 空值
+
+    // 2 window.getComputedStyle(element).width， 不能准确获取标准盒模型宽高
+    console.log(window.getComputedStyle(ie).width) // 150px
+    console.log(window.getComputedStyle(ie).height) // 80px
+    console.log(window.getComputedStyle(bz).width) // 150px
+    console.log(window.getComputedStyle(bz).height) // 80px
+
+    // 3 element.getBoundingClientRect().width， 准确获取两种盒模型宽高，推荐
+    console.log(ie.getBoundingClientRect().width) // 150
+    console.log(ie.getBoundingClientRect().height) // 80
+    console.log(bz.getBoundingClientRect().width) // 210
+    console.log(bz.getBoundingClientRect().height) // 140
+    ```
+````
+
+## 实现单行或多行文本溢出省略效果
+
+css 方式
+
+```html
+<style>
+  /* 单行 */
+  div {
+    width: 100px; /* 超过100px, ... */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  /* 多行 */
+  div {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4; /* 行数 */
+    overflow: hidden;
+  }
+</style>
+
+<div>
+  这是一段测试,文字这是一段测试,这是一段测试这是一段测试这是一段测试这是一段测试这是一段
+</div>
+```
+
+js 方式
+
+```html
+<style>
+  div {
+    height: 5em;
+    width: 10em;
+    border: 1px solid blue;
+  }
+</style>
+
+<div>
+  这是一段测试,文字这是一段测试,这是一段测试这是一段测试这是一段测试这是一段测试这是一段
+</div>
+
+<script>
+  const div = document.querySelector("div");
+  let words = div.innerHTML.split(/(?<=[\u4e00-\u9fa5])|(?<=\w*?\b)/g);
+  // 当scrollHeight大于clientHeight的时候，元素就是可以垂直滚动的
+  while (div.scrollHeight > div.clientHeight) {
+    words.pop();
+    div.innerHTML = words.join("") + "...";
+  }
+</script>
+```
+
+## 比较 opacity，visibility，display: none
+
+**共同点：** 隐藏元素
+
+**区别：**
+
+1. `display: none` 会让元素完全从渲染树中消失；不可以进行 DOM 事件监听；动态改变此属性时会引起重排。
+2. `visibility: hidden` 不会让元素从渲染树消失，渲染元素继续占据空间，只是内容不可见，不能点击;不可以进行 DOM 事件监听；动态改变此属性时会引起重绘。
+3. `opacity: 0` 不会让元素从渲染树消失，渲染元素继续占据空间，只是内容不可见，可以点击；可以进行 DOM 事件监听；利用 animation 动画，对 opacity 做变化（animation 会默认触发 GPU 加速），则只会触发 GPU 层面的 composite，不会触发重绘。
+
+## BFC 及其应用
+
+BFC 就是块级格式上下文，是页面盒模型布局中的一种 CSS 渲染模式，相当于一个独立的容器，里面的元素和外部的元素相互不影响。创建 BFC 的方式有：
+
+1. html 根元素
+2. float 浮动
+3. 绝对定位
+4. overflow 不为 visiable
+5. display 为表格布局或者弹性布局
+
+BFC 主要的作用是：
+
+1. 清除浮动
+2. 防止同一 BFC 容器中的相邻元素间的外边距重叠问题
+3. 实现左图右文之类的效果
+4. 可以解决浮动元素造成的父元素高度塌陷问题

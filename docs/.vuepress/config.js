@@ -37,8 +37,32 @@ module.exports = {
           title: '手写JS',
           collapsable: true,
           children: [
-            ['shouxie/', 'Introduction'],
-            'shouxie/bind',
+            ['shouxie/', '展开'],
+            // 'shouxie/bind',
+          ]
+        },
+        {
+          title: 'css',
+          collapsable: true,
+          children: [
+            ['css/', '展开'],
+            // 'shouxie/bind',
+          ]
+        },
+        {
+          title: 'js基础',
+          collapsable: true,
+          children: [
+            ['javascript/', '展开'],
+            // 'shouxie/bind',
+          ]
+        },
+        {
+          title: 'es6',
+          collapsable: true,
+          children: [
+            ['es6/', '展开'],
+            // 'shouxie/bind',
           ]
         },
       ],

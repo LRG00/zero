@@ -1,6 +1,6 @@
 # 手写代码
 
-## 01 防抖
+## 防抖
 
 ```javascript
 // 基础版
@@ -37,7 +37,7 @@ function debounce1(func, wait, option = { leading: false, trailing: true }) {
 }
 ```
 
-## 02 节流
+## 节流
 
 ```javascript
 // 方式一： 时间差
@@ -67,7 +67,7 @@ function throttle2(func, wait) {
 }
 ```
 
-## 03 深拷贝（递归的方式实现）
+## 深拷贝（递归的方式实现）
 
 ```javascript
 // 基础版（不考虑到循环引用和symbol）
@@ -113,7 +113,7 @@ function deepCopy(obj, hash = new WeakMap()) {
 }
 ```
 
-## 04 数组去重
+## 数组去重
 
 思路：声明一个新数组，遍历可能重复的数组，判断如果新数组中存在该元素，有就跳过，没有往新数组添加
 
@@ -161,20 +161,20 @@ function uniqueArr(arr) {
 }
 ```
 
-## 04 ajax
+## ajax
 
 注意点：兼容 ie 的话加上 new ActiveXObject('Mscrosoft.XMLHttp')
 
 ```javascript
-// 方式1：new Set
-const fetch = function(url, method = "get") {
+const _fetch = function(url, method = "get", formData) {
   return new Promise(function(resolve, reject) {
     const xhr = window.XMLHttpRequest
       ? new XMLHttpRequest()
       : new ActiveXObject("Mscrosoft.XMLHttp");
     xhr.open(method, url);
-    xhr.send();
+    xhr.send(formData);
     xhr.onreadystatechange = function() {
+      //0:请求未初始化 1:服务器连接已建立 2:请求已接收 3:请求处理中 4:请求已完成，且响应已就绪
       if ((xhr.readyState === 4 && xhr.status === 200) || xhr.status === 304) {
         resolve(xhr.responseText);
       } else {
@@ -185,4 +185,499 @@ const fetch = function(url, method = "get") {
 };
 ```
 
-:tada: :100:
+## 数组转树结构
+
+```javascript
+var list = [
+  { id: 1, name: "部门A", parentId: 0 },
+  { id: 3, name: "部门C", parentId: 1 },
+  { id: 4, name: "部门D", parentId: 1 },
+  { id: 5, name: "部门E", parentId: 2 },
+  { id: 6, name: "部门F", parentId: 3 },
+  { id: 7, name: "部门G", parentId: 2 },
+  { id: 8, name: "部门H", parentId: 4 },
+];
+function arrtotree(list) {
+  const map = list.reduce((acc, item) => {
+    acc[item.id] = item;
+    return acc;
+  }, {});
+  const ans = [];
+  for (let key in map) {
+    var item = map[key];
+    if (!item.parentId) {
+      // 或者 item.parentId === 0
+      ans.push(item);
+    } else {
+      var parent = map[item.parentId];
+      if (parent) {
+        parent.children = parent.children || [];
+        parent.children.push(item);
+      }
+    }
+  }
+  return ans;
+}
+// 方法2
+function listToTreeWithLevel(list, parent, level) {
+  var out = [];
+  for (var node of list) {
+    if (node.parentId === parent) {
+      node.level = level;
+      var children = listToTreeWithLevel(list, node.id, level + 1);
+      node.children = children;
+      out.push(node);
+    }
+  }
+  return out;
+}
+var result = arrtotree(list);
+var result1 = listToTreeWithLevel(list, 0, 0);
+console.log(result, result1);
+```
+
+## treeToArr(树结构转数组)
+
+```javascript
+function treeToList(tree) {
+  var queen = [];
+  var out = [];
+  queen = queen.concat(tree);
+  while (queen.length) {
+    var first = queen.shift();
+    if (first.children) {
+      queen = queen.concat(first.children);
+      delete first["children"];
+    }
+    out.push(first);
+  }
+  return out;
+}
+var tree = {
+  key: "10",
+  name: "十",
+  children: [
+    {
+      key: "5",
+      name: "五",
+    },
+    {
+      key: "2",
+      name: "二",
+      children: [
+        {
+          key: "7",
+          name: "七",
+        },
+        {
+          key: "11",
+          name: "十一",
+        },
+      ],
+    },
+    {
+      key: "3",
+      name: "三",
+    },
+  ],
+};
+console.log(treeToList(tree));
+```
+
+## compose
+
+```javascript
+function compose(...fn) {
+  if (!fn.length) return (v) => v;
+  if (fn.length === 1) return fn[0];
+  return fn.reduce((pre, cur) => {
+    return (...args) => pre(cur(...args));
+  });
+}
+// 用法如下:
+function fn1(x) {
+  return x + 1;
+}
+function fn2(x) {
+  return x + 2;
+}
+function fn3(x) {
+  return x + 3;
+}
+function fn4(x) {
+  return x + 4;
+}
+const a = compose(fn1, fn2, fn3, fn4);
+console.log(a);
+console.log(a(1)); // 1+4+3+2+1=11
+```
+
+## curry
+
+```javascript
+function curry(fn) {
+  return function curried(...args) {
+    if (fn.length <= args.length) {
+      return fn(...args);
+    }
+    return (...args1) => curried(...args, ...args1);
+  };
+}
+const join = (a, b, c) => {
+  return a + b + c;
+};
+// add(1)(2)(3)()=6 add(1,2,3)(4)()=10
+const add = curry(join);
+const res = add(1)(2)(3);
+console.log(res);
+```
+
+## dom2Json
+
+```html
+<div class="xxx">
+  <span>
+    <a>eee</a>
+  </span>
+  <span>
+    <a>111</a>
+    <a>222</a>
+  </span>
+</div>
+```
+
+```javascript
+function dom2Json(domtree) {
+  let obj = {};
+  obj.name = domtree.tagName;
+  obj.children = [];
+  domtree.childNodes.forEach((child) => obj.children.push(dom2Json(child)));
+  return obj;
+}
+var xxx = document.querySelector(".xxx");
+console.log(dom2Json(xxx));
+```
+
+## eventBus(发布订阅)
+
+```javascript
+class EventEmitter {
+  constructor() {
+    this._events = {};
+  }
+  // 实现订阅
+  on(eventName, callback) {
+    if (!this._events) {
+      // 给调用者增了个属性
+      this._events = {};
+    }
+    if (this._events[eventName]) {
+      this._events[eventName].push(callback);
+    } else {
+      this._events[eventName] = [callback];
+    }
+  }
+  // 删除订阅
+  off(eventName, callback) {
+    if (this._events[eventName]) {
+      this._events[eventName] = this._events[eventName].filter((fn) => {
+        return fn != callback && fn.l !== callback;
+      });
+    }
+  }
+  // 只执行一次订阅事件
+  once(eventName, callback) {
+    function one() {
+      callback(...arguments); // 面向切片
+      this.off(eventName, one);
+    }
+    one.l = callback;
+    this.on(eventName, one);
+  }
+  // 触发事件
+  emit(eventName) {
+    if (this._events[eventName]) {
+      this._events[eventName].forEach((fn) => {
+        fn.call(this, ...arguments);
+      });
+    }
+  }
+}
+// 测试
+const event = new EventEmitter();
+const handle = (...rest) => {
+  console.log(rest);
+};
+event.on("click", handle);
+event.emit("click", 1, 2, 3, 4);
+event.off("click", handle);
+event.emit("click", 1, 2);
+event.once("dbClick", handle);
+event.emit("dbClick", "xx", "pp");
+event.emit("dbClick");
+```
+
+## instanceof
+
+```javascript
+function _instanceof(obj, target) {
+  if (typeof obj !== "object") return false;
+  while (obj) {
+    if (obj.__proto__ === target.prototype) {
+      return true;
+    }
+    obj = obj.__proto__;
+  }
+  return false;
+}
+console.log(_instanceof(1, Object));
+```
+
+## lazyman
+
+```javascript
+class lazyMan {
+  constructor(name) {
+    this.name = name;
+    this.subs = [];
+    var fn = () => {
+      console.log(name);
+      this.next();
+    };
+    this.subs.push(fn);
+    setTimeout(() => {
+      this.next();
+    }, 0);
+  }
+  eat() {
+    var fn = () => {
+      console.log("eat");
+      this.next();
+    };
+    this.subs.push(fn);
+    return this;
+  }
+  sleepFirst(ms) {
+    var fn = () => {
+      setTimeout(() => {
+        console.log(ms + "Wake up after");
+        this.next();
+      }, ms);
+    };
+    this.subs.unshift(fn); // 放到任务队列顶部
+    return this;
+  }
+  sleep(ms) {
+    var fn = () => {
+      setTimeout(() => {
+        console.log(ms + "miao");
+        this.next();
+      }, ms);
+    };
+    this.subs.push(fn);
+    return this;
+  }
+  next() {
+    var fn = this.subs.shift();
+    fn && fn();
+  }
+}
+function _lazyMan(name) {
+  return new lazyMan(name);
+}
+_lazyMan("lrg")
+  .sleep(1000)
+  .eat();
+```
+
+## new
+
+```javascript
+function _new(constructor, ...rest) {
+  var context = Object.create(constructor.prototype);
+  var result = constructor.apply(context, rest);
+  var isObj = typeof result === "object" && result !== null;
+  return isObj ? result : context;
+}
+// 测试
+function Person(name) {
+  this.name = name;
+}
+var person = _new(Person, "jason");
+console.log(person.name);
+```
+
+## Object.create
+
+思路：将传入的对象作为原型
+
+```javascript
+function _create(obj) {
+  function F() {}
+  F.prototype = obj.prototype || obj;
+  return new F();
+}
+// 测试
+var obj = { name: "jason" };
+var newObj = _create(obj);
+console.log(newObj);
+```
+
+## reduce
+
+```javascript
+Array.prototype._reduce = function(...args) {
+  const hasInitialValue = args.length > 1;
+  if (!hasInitialValue && this.length === 0) {
+    throw new Error();
+  }
+  let result = hasInitialValue ? args[1] : this[0];
+  for (let i = hasInitialValue ? 0 : 1; i < this.length; i++) {
+    result = args[0](result, this[i], i, this);
+  }
+
+  return result;
+};
+// 测试
+var arr = [1, 2, 3];
+const res = arr._reduce((lj, item) => {
+  return lj + item;
+}, 100);
+console.log(res); // 106
+```
+
+## settimeout 实现 setinterval
+
+```javascript
+function _setTimeOut(callBack, wait) {
+  let timer = null;
+  function interVal() {
+    callBack();
+    timer = setTimeout(() => {
+      interVal();
+    }, wait);
+  }
+  interVal();
+  return {
+    cancel: () => {
+      clearTimeout(timer);
+    },
+  };
+}
+// 测试
+_setTimeOut(() => {
+  console.log("打印");
+}, 1000);
+```
+
+## 对象，数组扁平化
+
+```javascript
+// 数组扁平化
+function arrFlat(arr, depth = 1) {
+  var result = [];
+  for (var i = 0; i < arr.length; i++) {
+    if (Array.isArray(arr[i]) && depth > 0) {
+      result = result.concat(arrFlat(arr[i], depth - 1));
+    } else {
+      result.push(arr[i]);
+    }
+  }
+  return result;
+}
+console.log(arrFlat([1, 2, [1, [2, 3, [4, 5, [6]]]]]));
+
+// 对象扁平化
+// { a: b: c: { d: 1 }, aa: 2, c: [1, 2] } => { 'a.b.c.d': 1, aa: 2, 'c[0]': 1, 'c[1]': 2 }
+function objFlat(obj) {
+  var res = {};
+  fn(obj);
+  function fn(obj, str = "") {
+    for (const key in obj) {
+      const ele = obj[key];
+      if (Object.prototype.toString.call(ele) === "[object Object]") {
+        fn(obj[key], str + key + ".");
+      } else {
+        res[str + key] = ele;
+      }
+      if (Object.prototype.toString.call(ele) === "[object Array]") {
+        for (var i in ele) {
+          res[`${key}[${i}]`] = ele[i];
+        }
+      }
+    }
+  }
+  return res;
+}
+console.log(
+  objFlat({ a: { b: { c: { d: 1, name: "lrg" } } }, aa: 2, c: [1, 2] })
+);
+```
+
+## bind,call,apply
+
+call 思路：将函数设为对象的属性，执行该函数，删除该函数，再考虑传参的问题， 和返回值的问题
+
+```javascript
+//call=================================================
+Function.prototype._call = function(thisArg, ...args) {
+  thisArg = thisArg || window; // 如果第一个参数为null,this指向window
+  thisArg = Object(thisArg); //如果传进去的是一个基本类型的值，则会构造其包装类型的对象
+  let func = Symbol(); // 避免重名
+  thisArg[func] = this;
+  let res = thisArg[func](...args);
+  delete thisArg[func];
+  return res;
+};
+// 测试
+var foo = {
+  name: "jason",
+  age: 18,
+};
+function func(name, age) {
+  return {
+    name: this.name,
+    age,
+  };
+}
+var res = func._call(foo, "jason", 26);
+console.log(res);
+
+//apply=================================================
+Function.prototype._apply = function(thisArg, ...args) {
+  thisArg = thisArg || window;
+  thisArg = Object(thisArg);
+  let func = Symbol();
+  thisArg[func] = this;
+  let res = thisArg[func](args);
+  delete thisArg[func];
+  return res;
+};
+// 测试
+var foo1 = {
+  value: 1,
+  value2: 2,
+};
+function func1(params) {
+  return {
+    value: this.value,
+    value1: params
+  };
+}
+var res1 = func1._apply(foo1, [4, 2]);
+console.log(res1);
+
+// bind=============================================
+Function.prototype._bind = function(ctx, ...args) {
+  return (...innerArgs) => this.call(ctx, ...args, ...innerArgs);
+};
+// 测试
+const a = {
+  name: "jasonlee",
+};
+function test(...msg) {
+  console.log(this.name);
+}
+const newFunc = test._bind(a, 1);
+newFunc(2);
+```
