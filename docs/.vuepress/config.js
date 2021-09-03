@@ -14,6 +14,14 @@ module.exports = {
     // ['meta', { name: 'msapplication-TileImage', content: '/icons/msapplication-icon-144x144.png' }],
     // ['meta', { name: 'msapplication-TileColor', content: '#000000' }]
   ],
+  markdown: {
+    toc: {
+        includeLevel:[1, 2, 3, 4]
+    }
+  },
+  plugins: [
+    ['@dovyp/vuepress-plugin-clipboard-copy', true],
+  ],
   serviceWorker: false,
   themeConfig: {
     repo: 'LRG00/zero',

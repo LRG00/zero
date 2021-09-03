@@ -1,21 +1,163 @@
-# javascript
+---
+title: index
+date: 2021-09-02 17:10:16
+permalink: /pages/1d1a2e/
+categories:
+  - interview
+  - javascript
+tags:
+  -
+---
 
-## 原始类型有哪几种
+<!-- # javascript -->
 
-- boolean
-- null
-- undefined
-- number
-- string
-- symbol
+## 7 种原始类型和 1 种引用类型
+
+- `number` 任何类型的数字（原始类型）
+- `bigint` 任意长度的整数 （原始类型）尾部的 "n" 表示这是一个 BigInt 类型
+- `string` 字符串 （原始类型）
+- `boolean` true 和 false （原始类型）
+- `null` 未知的值 （原始类型）
+- `undefined` 未定义的值 （原始类型）
+- `symbol` 唯一的标识符 （原始类型）
+- `object` 更复杂的数据结构（引用类型）
+
+**原始类型和引用类型区别：**
 
 ## 判断数据类型
 
 - typeof
+
+```javascript
+typeof 100; // "number"
+typeof 10n; // "bigint"
+typeof "jason"; // "string"
+typeof true; // "boolean"
+typeof undefined; // "undefined"
+typeof Symbol("id"); // "symbol"
+typeof null; // "object" 这是 JavaScript 编程语言的一个错误，实际上它并不是一个 object
+typeof console; // "function"
+```
+
 - instanceof
 - Object.prototype.toString.call()
 - constructor
 
 ## 类型转换
 
-## this指向
+三种情况：字符串转换、数字型转换、布尔转换
+| Tables | Are | Cool |
+| ------------- |:-------------:| -----:|
+| col 3 is | right-aligned | $1600 |
+| col 2 is      | centered      |   $12 |
+| zebra stripes | are neat | \$1 |
+
+## 运算符
+
+加法 +,减法 -,乘法 \*,除法 /,取余 %,求幂 \*\*
+
+```javascript
+console.log(6 + 2); // 8
+console.log(6 - 2); // 4
+console.log(6 * 2); // 12
+console.log(6 / 2); // 3
+console.log(6 % 4); // 2
+console.log(6 ** 2); // 36
+
+var a = 1,
+  b = 1;
+console.log(++a); // 2，前置运算符返回最新值
+console.log(b++); // 1，后置运算符返回旧值
+
+// 转布尔
+console.log(Boolean(undefined)); // false
+console.log(Boolean(null)); // // false
+// 转数字
+console.log(+undefined); // NaN
+console.log(+null); // // 0
+// 逗号运算符ti
+let a = (1 + 2, 3 + 4); // 每个语句都运行，只有最后的语句的结果会被返回
+console.log(a); // 7（3 + 4 的结果）
+```
+
+::: tip 提示
+做运算的时候，把运算元（参数）转换成数字再继续运算
+:::
+
+## 值的比较
+
+- 大于 / 小于：a > b，a < b。
+- 大于等于 / 小于等于：a >= b，a <= b。
+- 检查两个值的相等：a == b，请注意双等号 == 表示相等性检查，而单等号 a = b 表示赋值。
+- 检查两个值不相等。不相等在数学中的符号是 ≠，但在 JavaScript 中写成 a != b。
+
+```javascript
+console.log(undefined == null); // true
+console.log(undefined === null); // false
+console.log(!undefined === !null); // true 一元运算符比===优先级高
+console.log(+undefined === +null); // false 一元运算符比===优先级高
+```
+
+## 原型、原型链
+
+在 JavaScript 中，对象有一个特殊的隐藏属性 [[Prototype]]，它要么为 null，要么就是对另一个对象的引用。该对象被称为“原型”。
+原型链：原型就是一个对象，也有一个特殊的隐藏属性 [[Prototype]]，它要么为 null，要么就是对另一个对象的引用。通过[[Prototype]]
+隐藏属性连接成一条线。
+
+```javascript
+var obj = {
+  name: "jason",
+};
+var obj1 = Object.create(null);
+console.log(obj, "obj");
+console.log(obj1, "obj1");
+```
+
+![图片加载失败](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-3609f3af-dcdf-46cf-9b42-d5c482759b0f/bff1ed23-6159-4fa9-9b1c-90e1c862d509.png)
+
+属性 [[Prototype]] 是内部的而且是隐藏的，设置方式：`__proto__`
+
+```javascript
+let animal = {
+  eats: true
+};
+let rabbit = {
+  jumps: true
+};
+
+rabbit.__proto__ = animal; // (*)
+
+// 现在这两个属性我们都能在 rabbit 中找到：
+alert( rabbit.eats ); // true (**)
+alert( rabbit.jumps ); // true
+```
+
+![图片加载失败](https://vkceyugu.cdn.bspapp.com/VKCEYUGU-3609f3af-dcdf-46cf-9b42-d5c482759b0f/e721daaf-8a75-4ff9-8d26-e94b8e9f7e3f.png)
+
+## F.prototype
+
+如果 F.prototype 是一个对象，那么 new 操作符会使用它为新对象设置 [[Prototype]]。
+这里的 F.prototype 指的是 F 的一个名为 "prototype" 的常规属性。这听起来与“原型”这个术语很类似，但这里我们实际上指的是具有该名字的常规属性。
+下面是一个例子：
+
+```javascript
+let animal = {
+  eats: true
+};
+
+function Rabbit(name) {
+  this.name = name;
+}
+
+Rabbit.prototype = animal;
+
+let rabbit = new Rabbit("White Rabbit"); //  rabbit.__proto__ == animal
+
+alert( rabbit.eats ); // true
+```
+
+设置 Rabbit.prototype = animal 的字面意思是：“当创建了一个 new Rabbit 时，把它的 [[Prototype]] 赋值为 animal”。
+
+- F.prototype 属性（不要把它与 [[Prototype]] 弄混了）在 new F 被调用时为新对象的 [[Prototype]] 赋值。
+- F.prototype 的值要么是一个对象，要么就是 null：其他值都不起作用。
+- "prototype" 属性仅在设置了一个构造函数（constructor function），并通过 new 调用时，才具有这种特殊的影响。

@@ -1,4 +1,14 @@
-# 手写代码
+---
+title: index
+date: 2021-09-01 17:07:23
+permalink: /pages/da0a0a/
+categories:
+  - interview
+  - shouxie
+tags:
+  - 
+---
+<!-- # 手写代码 -->
 
 ## 防抖
 

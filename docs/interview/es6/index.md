@@ -1,4 +1,14 @@
-# es6
+---
+title: index
+date: 2021-09-02 11:01:20
+permalink: /pages/7d449f/
+categories:
+  - interview
+  - es6
+tags:
+  - 
+---
+<!-- # es6 -->
 
 ## let const var 区别
 
