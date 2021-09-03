@@ -66,6 +66,14 @@ module.exports = {
           ]
         },
         {
+          title: '错误监控',
+          collapsable: true,
+          children: [
+            ['error1/', '展开'],
+            // 'shouxie/bind',
+          ]
+        },
+        {
           title: 'es6',
           collapsable: true,
           children: [
