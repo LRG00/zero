@@ -36,6 +36,15 @@ module.exports = {
     nav: [
       { text: "首页", link: "/" },
       {
+        text: "前端",
+        items: [
+          {text: "学习笔记", items: [
+            { text: "实用代码", link: "/pages/35a15c1/" },
+            { text: "webpack", link: "/pages/fe0b24/" },
+          ]}
+        ],
+      },
+      {
         text: "interview",
         link: "/pages/35a15c/",
         items: [
@@ -44,6 +53,11 @@ module.exports = {
           { text: "错误监控", link: "/pages/ade6ea/" },
           { text: "es6", link: "/pages/7d449f/" },
           { text: "手写代码", link: "/pages/da0a0a/" },
+          { text: "webpack", link: "/pages/6423fa/" },
+          { text: "vue", link: "/pages/d4dc7d/" },
+          { text: "浏览器相关", link: "/pages/269c3d/" },
+          { text: "计算机网络", link: "/pages/5bae33/" },
+          { text: "数据结构和算法", link: "/pages/bb8af9/" },
         ],
       },
       {
