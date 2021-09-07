@@ -72,7 +72,7 @@ module.exports = {
         ],
       },
       {
-        text: "nodejs",
+        text: "工具",
         link: "/pages/4ff0e8/",
       },
     ],
