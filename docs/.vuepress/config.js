@@ -17,7 +17,7 @@ module.exports = {
   plugins: [["@dovyp/vuepress-plugin-clipboard-copy", true]],
   serviceWorker: false,
   themeConfig: {
-    repo: "LRG00/zero",
+    // repo: "LRG00/zero",
     // editLinks: true, // 编辑链接
     // docsDir: "docs", // 编辑的文件夹
     sidebarDepth: 2, // 侧边栏显示深度，默认1，最大2（显示到h3标题）
@@ -59,7 +59,7 @@ module.exports = {
           { text: "错误监控", link: "/pages/ade6ea/" },
           { text: "webpack", link: "/pages/6423fa/" },
           { text: "vue框架", link: "/pages/d4dc7d/" },
-          { text: "浏览器相关", link: "/pages/d4dc7d/" },
+          { text: "浏览器相关", link: "/pages/269c3d/" },
           { text: "计算机网络", link: "/pages/5bae33/" },
           { text: "数据结构和算法", link: "/pages/bb8af9/" },
         ],
