@@ -27,7 +27,8 @@ module.exports = {
       name: "jason lee", // 必需
       href: "https://github.com/LRG00", // 可选的
     },
-    lastUpdated: "上次更新",
+    lastUpdated: false,
+    // lastUpdated: '上次更新',
     footer: {
       // 页脚信息
       createYear: 2019, // 博客创建年份
@@ -39,9 +40,11 @@ module.exports = {
         text: "前端",
         items: [
           {text: "学习笔记", items: [
+            { text: "常用资源", link: "/pages/039d46/" },
             { text: "html&css", link: "/pages/6d546b/" },
             { text: "webpack", link: "/pages/fe0b24/" },
-            { text: "常用资源", link: "/pages/039d46/" },
+            { text: "vue3学习", link: "/pages/039d48/" },
+            { text: "工程化实践", link: "/pages/039d49/" },
           ]}
         ],
       },
