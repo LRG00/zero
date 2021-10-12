@@ -44,6 +44,7 @@ module.exports = {
             { text: "html&css", link: "/pages/6d546b/" },
             { text: "webpack", link: "/pages/fe0b24/" },
             { text: "vue3学习", link: "/pages/039d48/" },
+            { text: "typescript入门", link: "/pages/039d50/" },
             { text: "工程化实践", link: "/pages/039d49/" },
           ]}
         ],
