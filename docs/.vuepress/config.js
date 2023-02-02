@@ -80,6 +80,10 @@ module.exports = {
         text: "工具",
         link: "/pages/4ff0e8/",
       },
+      {
+        text: "threejs",
+        link: "/pages/4ff0sb/",
+      },
     ],
     sidebar: { mode: "structuring", collapsable: false },
     updateBar: {
